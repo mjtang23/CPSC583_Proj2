@@ -1,0 +1,180 @@
+<!--Marcus Tang 10086730 Project 2
+Sources:
+https://www.youtube.com/watch?v=kK5kKA-0PUQ
+https://bl.ocks.org/mbostock/1346410
+http://zeroviscosity.com/d3-js-step-by-step/step-3-adding-a-legend
+-->
+<html>
+ <head>
+
+<!-- The timeline of radio buttons-->
+<form>
+  <label><input type="radio" name="dataset" value="year1" checked> 1974</label>
+  <label><input type="radio" name="dataset" value="year2"> 1975</label>
+  <label><input type="radio" name="dataset" value="year3" > 1976</label>
+  <label><input type="radio" name="dataset" value="year4"> 1977</label>
+  <label><input type="radio" name="dataset" value="year5" > 1978</label>
+  <label><input type="radio" name="dataset" value="year6"> 1979</label>
+  <label><input type="radio" name="dataset" value="year7" > 1980</label>
+  <label><input type="radio" name="dataset" value="year8"> 1981</label>
+  <label><input type="radio" name="dataset" value="year9" > 1982</label>
+  <label><input type="radio" name="dataset" value="year10"> 1983</label>
+  <label><input type="radio" name="dataset" value="year11" > 1984</label>
+  <label><input type="radio" name="dataset" value="year12"> 1985</label>
+  <label><input type="radio" name="dataset" value="year13" > 1986</label>
+  <label><input type="radio" name="dataset" value="year14"> 1987</label>
+  <label><input type="radio" name="dataset" value="year15" > 1988</label>
+  <label><input type="radio" name="dataset" value="year16"> 1989</label>
+  <label><input type="radio" name="dataset" value="year17" > 1990</label>
+  <label><input type="radio" name="dataset" value="year18"> 1991</label>
+  <label><input type="radio" name="dataset" value="year19" > 1992</label>
+  <label><input type="radio" name="dataset" value="year20"> 1993</label>
+  <label><input type="radio" name="dataset" value="year21" > 1994</label>
+  <label><input type="radio" name="dataset" value="year22"> 1995</label>
+  <label><input type="radio" name="dataset" value="year23" > 1996</label>
+  <label><input type="radio" name="dataset" value="year24"> 1997</label>
+  <label><input type="radio" name="dataset" value="year25" > 1998</label>
+  <label><input type="radio" name="dataset" value="year26"> 1999</label>
+  <label><input type="radio" name="dataset" value="year27" > 2000</label>
+  <label><input type="radio" name="dataset" value="year28"> 2001</label>
+  <label><input type="radio" name="dataset" value="year29" > 2002</label>
+  <label><input type="radio" name="dataset" value="year30"> 2003</label>
+  <label><input type="radio" name="dataset" value="year31" > 2004</label>
+  <label><input type="radio" name="dataset" value="year32"> 2005</label>
+  <label><input type="radio" name="dataset" value="year33" > 2006</label>
+  <label><input type="radio" name="dataset" value="year34"> 2007</label>
+  <label><input type="radio" name="dataset" value="year35" > 2008</label>
+  <label><input type="radio" name="dataset" value="year36"> 2009</label>
+  <label><input type="radio" name="dataset" value="year37" > 2010</label>
+  <label><input type="radio" name="dataset" value="year38"> 2011</label>
+  <label><input type="radio" name="dataset" value="year39" c> 2012</label>
+  <label><input type="radio" name="dataset" value="year40"> 2013</label>
+  <label><input type="radio" name="dataset" value="year41"> 2014</label>
+  
+</form>
+	<title>Project 2 Marcus Tang 10086730</title> 
+	<script src="http://d3js.org/d3.v4.min.js" charset="utf-8"></script>
+	
+</head>
+   
+  <body>
+  <script>
+	//margin and the radius
+	var margin = {top: 180, right: 100, bottom: 50, left: 20},
+	width = 700 - margin.right - margin.left,
+	height = 900 - margin.top - margin.bottom
+	radius = width/2
+	
+	//Creating domain and range for the labels in the csv file and the colors
+	var color = d3.scaleOrdinal()
+		.domain(["Milk and milk products excluding cheese", "Cheese", "Carcase meat", "Non-carcase meat and meat products", "Fish", "Eggs"
+		, "Fats", "Sugar and preserves", "Fresh and processed fruit and vegetables including potatoes", "Fresh and processed vegetables including potatoes", "Fresh and processed potatoes"
+		, "Fresh and processed fruit and vegetables excluding potatoes", "Fresh and processed vegetables excluding potatoes", "Fresh and processed fruit", "Bread", "Flour", "Cakes buns and pastries"
+		, "Biscuits and crispbreads", "Other cereals and cereal products", "Beverages", "Other food and drink", "Soft drinks", "Confectionery", "Alcoholic drinks"])
+	    .range(["#1f77b4", "#aec7e8",
+		"#ff7f0e", "#ffbb78",
+		"#2ca02c", "#8df8a",
+		"#d62728", "#ff9896",
+		"#9467bd", "#c5b0d5",
+		"#8c564b", "#c49c94",
+		"#e377c2", "#f7b6d2",
+		"#7f7f7f", "#c7c7c7",
+		"#bcbd22", "#dbdb8d",
+		"#17becf", "#9edae5",
+		"#ffcc11", "#8b6914",
+		"#a2cd5a", "#802a2a",
+		]);
+  
+    
+		
+	// creating an arc
+	var arc = d3.arc()
+		.outerRadius(radius - 10)
+		.innerRadius(0);
+	// creating the pie using the data from year1 (default)	
+	var pie = d3.pie()
+		.sort(null)
+		.value(function(d){ return d.year1 });
+   
+    //creating the svg
+	var svg = d3.select("body").append("svg")
+	    .attr("class", "pie")
+		.attr("width", 1000)
+		.attr("height",700)
+		.append("g")
+		.attr("transform", "translate(" + width/2 + "," + height/2 + ")");
+		
+	// Creates the 	inner white circle and the donut chart
+	var arc = d3.arc()
+		.innerRadius(radius - 60)
+		.outerRadius(radius);
+		
+		
+	// import default data and the descriptions
+	d3.csv("FoodTrends2.csv", function(data) {
+		data.forEach(function(d) {
+	  
+		d.year1 = +d.year1;
+		d.desc1 = d.desc1;
+		})
+		
+		//Parising through the data
+		var path = svg.selectAll("path")
+			.data(pie(data))
+			.enter().append("path")
+			.attr("d", arc)
+			.style("fill", function(d) { return color(d.data.desc1); });
+			
+		//placing the function on the objects 
+		d3.selectAll("input")
+          .on("change", change);
+	    
+		//Getting the values to adjust the arcs
+		 function change() {
+			var value = this.value;
+			pie.value(function(d) { return d[value]; }); // change the value function
+			path = path.data(pie(data)); // compute the new angles
+			path.transition().duration(2000).attrTween("d", arcTween); // redraw the arcs
+			
+		}
+		//Where the arcs adjust from current position
+		function arcTween(a) {
+			var i = d3.interpolate(this._current, a);
+			this._current = i(0);
+			return function(t) {
+			return arc(i(t));
+			};
+		}
+		
+		// Creation of the legend
+		 var legend = svg.selectAll(".legend")                     
+          .data(color.domain())                                  
+          .enter()                                                
+          .append("g")                                            
+          .attr("class", "legend")                                
+          .attr("transform", function(d, i) {                     
+            var height = 18+ 4;         
+            var offset =  height * color.domain().length / 2;     
+            var horz = 8 * 40;                       
+            var vert = i* height - 250;                       
+            return "translate(" + horz + "," + vert + ")";        
+          });   
+		  
+        // Creating the circles for the colors on the legend
+        legend.append("circle")                                     
+          .attr("r", 12)                                                  
+          .style("fill", color)                                   
+          .style("stroke", color);          
+		  
+        // Creating the text for the legend 
+        legend.append("text")                                     
+          .attr('x', 12 + 4)              
+          .attr('y', 12 - 4)              
+          .text(function(d) { return d; });                       
+
+	})
+		
+   
+   </script>
+  </body>
+</html>
